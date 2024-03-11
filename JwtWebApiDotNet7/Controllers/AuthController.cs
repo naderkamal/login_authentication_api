@@ -54,8 +54,9 @@ namespace UploadFile.Controllers
                 Username = request.Username,
                 PasswordHash=request.Password,
             };
-
-            if (!_dbcontext.Users.Any(u=>u==user))
+            var existingUser = _dbcontext.Users
+                .SingleOrDefault(u => u.Username == user.Username && u.PasswordHash == user.PasswordHash);
+            if (existingUser!=null)
             {
                 return BadRequest("User not found.");
             }
